@@ -26,7 +26,7 @@ def start():
     start_time = datetime.datetime.today()
     ll['text']=letter
     w.update_idletasks()
-    w.after(1,update_time)
+    w.after(100,update_time)
 
 def update_time():
     if not time_finish:
