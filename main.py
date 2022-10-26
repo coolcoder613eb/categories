@@ -14,27 +14,80 @@ w.minsize(width=200, height=50)
 w.resizable = False
 w.title('categories')
 
+t = tk.StringVar()
+t.set('Time')
+
 cats = [1, 2, 3, 4, 5, 6, 7, 8]
 ents = []
 
 time_finish = False
 
 def start():
-    global start_time
+    global start_time, spb
     for x in ents:
         x.delete(0, tk.END)
     start_time = datetime.datetime.today()
     ll['text']=letter
+
+    spb = ttk.Button(tf, text='Stop', command=stop)
+    spb.grid(padx=3, pady=3, column=3, row=0, sticky='e')
+
+    sb.grid_remove()
+
     w.update_idletasks()
     w.after(100,update_time)
 
+def start2():
+    global start_time2, t1
+    start_time2 = datetime.datetime.today()
+    ll['text'] = letter
+    t1=te.get()
+    te.grid_remove()
+    w.update_idletasks()
+    w.after(100, time_left)
+
 def update_time():
+    global end_time, time_taken
     if not time_finish:
         now = datetime.datetime.today()
-        tl['text'] = str(now - start_time).split('.')[0]
+        t.set(str(now - start_time).split('.')[0])
         w.update_idletasks()
-        w.after(10,update_time())
+        w.after(100,update_time)
+    else:
+        end_time = datetime.datetime.today()
+        time_taken = end_time - start_time
 
+
+def time_left():
+    now = datetime.datetime.today()
+    a = str(time_taken-(now - start_time2)).split('.')[0]
+    t.set(a)
+    w.update_idletasks()
+    if a == '0:00:00':
+        stop2()
+    else:
+        w.after(100, time_left)
+
+def stop():
+    global time_finish, sb2
+    time_finish = True
+    t.set('Time')
+    ll['text'] = 'Letter'
+    for x in ents:
+        x.delete(0, tk.END)
+    spb.grid_remove()
+    sb2 = ttk.Button(tf, text='Start', command=start2)
+    sb2.grid(padx=3, pady=3, column=2, row=0, sticky='e')
+    te = tk.Entry(total)
+    te.grid(padx=0, pady=0, column=0, row=2, sticky='ew')
+    w.update_idletasks()
+
+def stop2():
+    for x in ents:
+        x['state'] = tk.DISABLED
+    ttl = ttk.Label(total, text=str(t1), relief=tk.SOLID, borderwidth=1, background='#ffffff', width=10, anchor=tk.CENTER)
+    ttl.grid(padx=3, pady=3, column=0, row=1, sticky='ew')
+    te.grid()
 
 tf = tk.Frame(w, padx=0, pady=0, bg='#ffffff')
 tf.grid(column=0, row=1, padx=0, pady=0, sticky='nsew')
@@ -42,11 +95,11 @@ tf.grid(column=0, row=1, padx=0, pady=0, sticky='nsew')
 ll = ttk.Label(tf, text='Letter', relief=tk.SOLID, borderwidth=1, background='#ffffff', width=6, anchor=tk.CENTER)
 ll.grid(padx=3, pady=3, column=1, row=0, sticky='e')
 
-tl = ttk.Label(tf, text='Time', relief=tk.SOLID, borderwidth=1, background='#ffffff', width=10, anchor=tk.CENTER)
+tl = ttk.Label(tf, textvariable=t, relief=tk.SOLID, borderwidth=1, background='#ffffff', width=10, anchor=tk.CENTER)
 tl.grid(padx=3, pady=3, column=0, row=0, sticky='e')
 
 sb = ttk.Button(tf, text='Start', command=start)
-sb.grid(padx=3, pady=3, column=5, row=0, sticky='e')
+sb.grid(padx=3, pady=3, column=2, row=0, sticky='e')
 
 f = tk.Frame(w, relief=tk.SOLID, padx=0, pady=0, bg='#ffffff', bd=1)
 f.grid(column=0, row=2, padx=0, pady=0, sticky='nsew')
