@@ -68,6 +68,11 @@ def time_left():
     else:
         w.after(100, time_left)
 
+def mkte():
+    global te
+    te = tk.Entry(total)
+    te.grid(padx=0, pady=0, column=0, row=2, sticky='ew')
+
 def stop():
     global time_finish, sb2
     time_finish = True
@@ -78,8 +83,7 @@ def stop():
     spb.grid_remove()
     sb2 = ttk.Button(tf, text='Start', command=start2)
     sb2.grid(padx=3, pady=3, column=2, row=0, sticky='e')
-    te = tk.Entry(total)
-    te.grid(padx=0, pady=0, column=0, row=2, sticky='ew')
+    mkte()
     w.update_idletasks()
 
 def stop2():
@@ -90,7 +94,9 @@ def stop2():
     te.grid()
 
 tf = tk.Frame(w, padx=0, pady=0, bg='#ffffff')
-tf.grid(column=0, row=1, padx=0, pady=0, sticky='nsew')
+#tf.grid(column=0, row=1, padx=0, pady=0, sticky='nsew')
+
+
 
 ll = ttk.Label(tf, text='Letter', relief=tk.SOLID, borderwidth=1, background='#ffffff', width=6, anchor=tk.CENTER)
 ll.grid(padx=3, pady=3, column=1, row=0, sticky='e')
@@ -148,6 +154,8 @@ total = tk.Frame(f, relief=tk.SOLID, padx=3, pady=3, bg='#ffffff', bd=1)
 total.grid(column=8, row=0, padx=0, pady=0, sticky='nsew')
 l8 = tk.Label(total, text='Total', bg='#ffffff')
 l8.grid(padx=0, pady=0, column=0, row=0, sticky='nsew')
+
+mkte()
 
 for x, item in enumerate(cats):
     ents.append(tk.Entry(item))
